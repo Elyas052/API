@@ -23,26 +23,30 @@ public class MinionApiWithQueryParamsTest {
      * And "Female" should be in response payload
      * And "Janette" should be in response payload
      */
-    String endpoint = "http://18.206.236.92:8000/api/minions/search";
+    String endpoint = "http://44.212.56.101:8000/api/minions/search";
 
     @DisplayName("GET /api/minions/search with query params")
     @Test
     public void searchForMinionTest() {
+        // Sending a GET request to the specified endpoint with query parameters
         Response response = given().accept(ContentType.JSON)
                 .and().queryParam("gender", "Female")
                 .and().queryParam("nameContains", "e")
                 .when().get(endpoint);
 
-        // Verify is the status code is 200
+        // Verify if the status code is 200 (OK)
         assertEquals(HttpStatus.SC_OK, response.statusCode());
 
-        // Verify response header content-typ
+        // Verify that the response header content type is JSON
         assertEquals(ContentType.JSON.toString(), response.contentType());
 
-        // And "Female" should be in response payload
-        // And "Janette" should be in response payload
+        // Assert that "Female" is present in the response payload
         assertTrue(response.body().asString().contains("Female"));
-        assertTrue(!response.body().asString().contains("Male")); // true
+
+        // Assert that "Male" is not present in the response payload
+        assertTrue(!response.body().asString().contains("Male"));
+
+        // Assert that "Janette" is present in the response payload
         assertTrue(response.body().asString().contains("Janette"));
     }
 }

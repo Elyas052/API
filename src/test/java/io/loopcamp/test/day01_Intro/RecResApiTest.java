@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class contains test cases for making GET requests to the "https://reqres.in/api/users/" endpoint using RestAssured.
+ */
 public class RecResApiTest {
 
     // API endpoint
@@ -22,7 +25,6 @@ public class RecResApiTest {
      * And RESPONSE BODY should contain "George"
      * And Headers Content Type is JSON
      */
-
     @DisplayName("GET all users")
     @Test
     public void usersGetTest() {
@@ -52,7 +54,6 @@ public class RecResApiTest {
         System.out.println("Response Content Type: " + response.contentType());
         // Response Content Type: application/json; charset=utf-8
         assertTrue(response.contentType().contains("application/json"));
-
     }
 
     /**
@@ -64,7 +65,6 @@ public class RecResApiTest {
      * And Response body should contain user info "Charles"
      * And Response Header's Content Type is application/json
      */
-
     @DisplayName("GET single user")
     @Test
     public void getSingleUserApiTest() {
@@ -91,10 +91,10 @@ public class RecResApiTest {
      * Then Response status code should be 404
      * And Response body should contain {}
      */
-
     @DisplayName("GET request to non existing user")
     @Test
     public void getSingleUserNegativeApiTest() {
+
         Response response = when().get(endpoint + 50);
         System.out.println("Status Code: " + response.statusCode());
         assertEquals(404, response.statusCode());

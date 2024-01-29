@@ -8,61 +8,50 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class contains tests related to headers for interacting with a Minion API.
+ */
 public class MinionHeadersTest {
+
+    // Base URL for the Minion API
+    String requestUrl = "http://44.212.56.101:8000/api/minions";
+
     /**
-     * When I send a GET request to --- > minions_base_url/api/minions -- > your_id:8000 = minions_base_url
-     * ---------------------------------------------------------
-     * Then Response STATUS CODE must be 200
-     * And I Should see all Minions data in XML format
+     * Test to ensure that a GET request to /api/minions returns a status code of 200
+     * And the response is in XML format.
      */
-
-    String requestUrl = "http://52.23.174.40:8000/api/minions";
-
     @DisplayName("GET /api/minions and expect defaulted XML format")
     @Test
     public void getAllMinionsHeadersTest() {
         when().get(requestUrl)
                 .then().assertThat().statusCode(200)
                 .and().contentType(ContentType.XML); // This will be more dynamic instead of putting "application/xml"
-        //.and().contentType("application/xml");
-
     }
 
     /**
-     * Given an Accept type is application/json
-     * When I send a GET request to
-     * minions_base_url/api/minions
-     * ---------------------------------------------------------
-     * Then Response STATUS CODE must be 200
-     * And I Should see all Minions data in json format
+     * Test to verify that when sending a GET request to /api/minions with the Accept header set to
+     * application/json, the response status code is 200, and the content type is in JSON format.
      */
-
     @DisplayName("GET /api/minions with requested header ")
     @Test
     public void acceptTypeHeaderTest() {
-        //given().accept("application/json")
-        given().accept(ContentType.JSON)        // More dynamic using ENUMs
+        given().accept(ContentType.JSON) // More dynamic using ENUMs
                 .when().get(requestUrl)
                 .then().assertThat().statusCode(200)
-                //.and().contentType("application/json")
                 .and().contentType(ContentType.JSON);  // More dynamic using ENUMs
     }
 
     /**
-     * Given Except a type is application/xml
-     * When I send a GET request to --- >minion_base_url/api/minions
-     * ---------------------------------------------------------
-     * Then Response STATUS CODE must be 200
-     * And read headers //(how to read a specific header)
+     * Test to validate that when sending a GET request to /api/minions with the Accept header set to
+     * application/xml, the response status code is 200, and the headers can be read and validated.
      */
-
     @DisplayName("GET /api/minions with requested header JSON - read headers")
     @Test
     public void readResponseHeadersTest() {
         Response response = given().accept(ContentType.JSON)
                 .when().get(requestUrl);
 
-        //response.prettyPrint();
+        // Validate the response status code
         assertEquals(200, response.statusCode());
 
         // How to read each header - .getHeader(String str - Key);
@@ -70,11 +59,10 @@ public class MinionHeadersTest {
         System.out.println("Content-type Header: " + response.getHeader("Content-Type"));
         System.out.println("Connection Header: " + response.getHeader("Connection"));
 
-
         // How to read all Headers - .getHeaders();
         System.out.println("\nAll Headers: \n" + response.getHeaders());
 
-        // How would validate if any of the header is not empty
+        // How to validate if any of the header is not empty
         assertTrue(response.getHeader("Keep-Alive") != null);
     }
 }

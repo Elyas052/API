@@ -1,19 +1,19 @@
 package io.loopcamp.test.day03_json_path;
 
-import io.loopcamp.utils.ConfigurationReader;
-import io.loopcamp.utils.MinionTestBase;
+import io.loopcamp.utils.ZipCodeTestBase;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MinionPathMethodTest extends MinionTestBase {
+public class MinionPathMethodTest extends ZipCodeTestBase {
 
     /**
      * Given accept is json
@@ -76,6 +76,81 @@ public class MinionPathMethodTest extends MinionTestBase {
         assertEquals("Female", response.path("gender"));
         assertEquals("7842554879", response.path("phone"));
 
+
+    }
+
+
+    /**
+     * Given accept is json
+     * When I send get request to /minions
+     * -------------
+     * Then status code is 200
+     * And content type is json
+     * And I can navigate json array object
+     */
+
+    @DisplayName("GET /minions with path()")
+    @Test
+    public void readMinionJsonArrayUsingPathTest() {
+
+        Response response = given().accept(ContentType.JSON)
+                .when().get("/minions");
+        assertEquals(HttpStatus.SC_OK, response.statusCode());
+        assertEquals(ContentType.JSON.toString(), response.contentType());
+
+        /** Sample response body part
+         [
+         {
+         "id": 1,
+         "gender": "Male",
+         "name": "Meade",
+         "phone": "9994128233"
+         },
+         {
+         "id": 2,
+         "gender": "Male",
+         "name": "Nels",
+         "phone": "4218971348"
+         }
+         ]
+         */
+        // Print all ids
+        System.out.println("All Ids: " + response.path("id"));
+        System.out.println("All Ids: " + response.path("name"));
+
+
+        // Print 1st minion id and name
+        System.out.println("1st minion id: " + response.path("[0].id"));
+        System.out.println("1st minion id: " + response.path("id[0]")); // this will do the same thing.
+        System.out.println("1st minion id: " + response.path("name[0]"));
+
+
+        // Print last minion id and name -- > we just need to provide -1
+        System.out.println("last minion id: " + response.path("id[-1]"));
+        System.out.println("last minion id: " + response.path("name[-1]"));
+        // System.out.println( "1st minion id: " + response.path("[-1].id")); // This will not find it.
+
+
+        // Where can we store all the ids
+        List<Integer> listId = response.path("id");
+        // How many minions I have?
+        System.out.println("Total Minions: " + listId.size());
+        System.out.println("All Ids: " + listId);
+
+        // How can you store all the names into List -- > Print all names and say Hi --- ? Hi $name!
+        List<String> listName = response.path("name");
+        for (int i = 0; i < listName.size(); i++) {
+            System.out.println("Hi " + listName.get(i) + "!");
+        }
+
+
+        //System.out.println();
+        //for (String each : listName) {
+        //    System.out.println("Hi " + each + "!");
+        //}
+
+        //System.out.println();
+        //listName.forEach(each -> System.out.println("Hi " + each + "!"));
 
     }
 

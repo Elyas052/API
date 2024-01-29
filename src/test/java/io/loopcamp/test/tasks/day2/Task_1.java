@@ -26,6 +26,7 @@ public class Task_1 {
     @DisplayName("Send Get request and response SC_200 OK")
     @Test
     public void sendGetRequestTest() {
+
         // Send a GET request to the specified API endpoint
         Response response = given()
                 .accept(ContentType.JSON)

@@ -6,12 +6,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * This class contains a simple test case for making a Hello World GET request to a specified API endpoint.
+ */
 public class HelloWorldApiTest {
 
     // API Endpoint
     String url = "https://sandbox.api.service.nhs.uk/hello-world/hello/world";
 
-    // Test case for Hello World GET request
+    /**
+     * Test case for Hello World GET request.
+     */
     @DisplayName("Hello World GET request")
     @Test
     public void helloWorldGetRequestTest() {
@@ -35,7 +40,6 @@ public class HelloWorldApiTest {
 
         // .asString() method will return the RESPONSE BODY as a String
         String actualResponseBody = response.prettyPrint();
-        // System.out.println(actualResponseBody);
 
         // Assert that "Hello World!" is in the body
         Assertions.assertTrue(actualResponseBody.contains("Hello World!"));
