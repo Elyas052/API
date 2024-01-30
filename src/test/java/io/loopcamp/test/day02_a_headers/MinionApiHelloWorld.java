@@ -44,6 +44,7 @@ public class MinionApiHelloWorld {
     @DisplayName("GET api/hello - BDD")
     @Test
     public void helloApiBddTest() {
+
         when().get(apiMethod)
                 .then().assertThat().statusCode(200)
                 .and().contentType("text/plain;charset=ISO-8859-1");

@@ -1,8 +1,6 @@
 package io.loopcamp.test.day01_Intro;
 
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +21,7 @@ public class RecResApiTest {
      * When user sends GET request
      * Then RESPONSE STATUS CODE is 200
      * And RESPONSE BODY should contain "George"
-     * And Headers Content Type is JSON
+     * And Headers Content Type is Json
      */
     @DisplayName("GET all users")
     @Test

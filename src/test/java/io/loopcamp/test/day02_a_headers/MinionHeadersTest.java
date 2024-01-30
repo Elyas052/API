@@ -23,6 +23,7 @@ public class MinionHeadersTest {
     @DisplayName("GET /api/minions and expect defaulted XML format")
     @Test
     public void getAllMinionsHeadersTest() {
+
         when().get(requestUrl)
                 .then().assertThat().statusCode(200)
                 .and().contentType(ContentType.XML); // This will be more dynamic instead of putting "application/xml"
@@ -35,6 +36,7 @@ public class MinionHeadersTest {
     @DisplayName("GET /api/minions with requested header ")
     @Test
     public void acceptTypeHeaderTest() {
+
         given().accept(ContentType.JSON) // More dynamic using ENUMs
                 .when().get(requestUrl)
                 .then().assertThat().statusCode(200)
@@ -48,6 +50,7 @@ public class MinionHeadersTest {
     @DisplayName("GET /api/minions with requested header JSON - read headers")
     @Test
     public void readResponseHeadersTest() {
+
         Response response = given().accept(ContentType.JSON)
                 .when().get(requestUrl);
 

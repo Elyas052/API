@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinionApiWithParamsTest {
 
     /**
-     * Given an accepted type is JSON
+     * Given an accepted type is Json
      * And ID path parameter value is 5
      * When a user sends GET request to /api/minions/{id}
      * ---------------------------------------------------------
@@ -51,7 +51,7 @@ public class MinionApiWithParamsTest {
     }
 
     /**
-     * Given an accepted type is JSON
+     * Given an accepted type is Json
      * And ID parameter value is 500
      * When a user sends GET request to /api/minions/{id}
      * ---------------------------------------------------------

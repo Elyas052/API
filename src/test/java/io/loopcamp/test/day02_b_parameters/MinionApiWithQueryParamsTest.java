@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinionApiWithQueryParamsTest {
 
     /**
-     * Given an accepted type is JSON
+     * Given an accepted type is Json
      * And query parameter values are:
      * gender|Female
      * nameContains|e
@@ -28,6 +28,7 @@ public class MinionApiWithQueryParamsTest {
     @DisplayName("GET /api/minions/search with query params")
     @Test
     public void searchForMinionTest() {
+
         // Sending a GET request to the specified endpoint with query parameters
         Response response = given().accept(ContentType.JSON)
                 .and().queryParam("gender", "Female")
