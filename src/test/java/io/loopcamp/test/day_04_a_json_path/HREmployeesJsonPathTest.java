@@ -54,5 +54,40 @@ public class HREmployeesJsonPathTest extends HRApiTestBase {
 
         // Asserting that the list of emails contains the specified email address "NYANG"
         assertTrue(emails.contains("NYANG"));
+
+        // Get all employees first name who work for department_id=90
+        /*
+            SELECT first_name FROM employees
+            WHERE department_id = 90;
+         */
+
+        // findAll() --- >  comes from scripting groovy language (based on java)
+        List<String> firstNames = jsonPath.getList("items.first_name");
+        System.out.println("First Names: " + firstNames);
+        System.out.println(firstNames.size());
+
+        // For those who are under department_id 90
+        List<String> firstNamesWithDepId90 = jsonPath.getList("items.findAll{it.department_id==90}.first_name");
+        System.out.println("First Names for those with Dep_ID 90: " + firstNamesWithDepId90);
+
+        // Find all first_name for whose who works as IT_PROG
+        List<String> firstNamesWithIt_Prog = jsonPath.getList("items.findAll{it.job_id=='IT_PROG'}.first_name");
+        System.out.println("First Names for those with Dep_ID 90: " + firstNamesWithIt_Prog);
+
+        // Find All first name making more than 5000
+        List<String> allNameForSalaryMoreThan5000 = jsonPath.getList("items.findAll{it.salary > 5_000}.first_name");
+        System.out.println("All Names For Salary More Than 5000: " + allNameForSalaryMoreThan5000);
+
+        // Find the first name for the max salary -- > max{}
+        String maxSalaryName = jsonPath.getString("items.max{it.salary}.first_name");
+        System.out.println("Max Salary Name = " + maxSalaryName);
+
+        // Find the first name for the mix salary -- > max{}
+        String minSalaryName = jsonPath.getString("items.min{it.salary}.first_name");
+        System.out.println("Min Salary Name = " + minSalaryName);
+
+        // What is the min salary with related infos?
+        String minSalary = jsonPath.getString("items.min{it.salary}");
+        System.out.println("Min Salary: " + minSalary);
     }
 }
