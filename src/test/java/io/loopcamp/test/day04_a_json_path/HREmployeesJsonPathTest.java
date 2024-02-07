@@ -1,4 +1,4 @@
-package io.loopcamp.test.day_04_a_json_path;
+package io.loopcamp.test.day04_a_json_path;
 
 import io.loopcamp.utils.HRApiTestBase;
 import io.restassured.http.ContentType;
@@ -7,9 +7,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;

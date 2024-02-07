@@ -1,4 +1,4 @@
-package io.loopcamp.test.day_04_a_json_path;
+package io.loopcamp.test.day04_a_json_path;
 
 import io.loopcamp.utils.ConfigurationReader;
 import io.restassured.http.ContentType;
