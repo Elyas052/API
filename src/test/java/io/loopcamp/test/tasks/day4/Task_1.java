@@ -115,7 +115,7 @@ public class Task_1 extends HRApiTestBase {
 
         // Given accept type is Json
         // And query param value q= region_id 3
-        Response response = given().accept(ContentType.JSON)
+        Response response = given().log().all().accept(ContentType.JSON)
                 .and().queryParam("q", "{\"region_id\":30}")
                 .when().get("/countries");
 
