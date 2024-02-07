@@ -1,62 +1,78 @@
 package io.loopcamp.test.tasks.day5;
 
-public class Task_1 {
+import io.loopcamp.pojo.ZipCode;
+import io.loopcamp.pojo.ZipCodeInfo;
+import io.loopcamp.utils.ZipCodeTestBase;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.jupiter.api.Assertions.*;
 
-    /**
-     * Zipcode Homework
-     * Documentation: https://www.zippopotam.us/ Links to an external site.
-     *
-     * BASEURL: api.zippopotam.us Links to an external site.
-     *
-     *
-     * NOTE:
-     * 	When writing pojo, for json keys that contain space, you will need to add @JasonProperty annotation:
-     * 	Ex:
-     * 		        @Data
-     *        public class ZipInfo {
-     *            @JasonProperty("post code")
-     * 			private String postCode;
-     *
-     *
-     * Scenarios:
-     *
-     * Given except application/json
-     * And path zipcode is 22031
-     * When I send a GET request to /us endpoint
-     * Then status code must be 200
-     * And content type must be application/json
-     * And Server header is cloudflare
-     * And Report-To header exists
-     * And body should contain following information
-     *     post code is 22031
-     *     country  is United States
-     *     country abbreviation is US
-     *     place name is Fairfax
-     *     state is Virginia
-     *     latitude is 38.8604
-     *
-     * ===========================
-     *
-     * Given except application/json
-     * And path zipcode is 50000
-     * When I send a GET request to /us endpoint
-     * Then status code must be 404
-     * And content type must be application/json
-     *
-     * ============================
-     *
-     * Given except application/json
-     * And path state is va
-     * And path city is Fairfax
-     * When I send a GET request to /us endpoint
-     * Then status code must be 200
-     * And content type must be application/json
-     * And payload should contain following information
-     *     country abbreviation is US
-     *     country  United States
-     *     place name  Fairfax
-     *     each place must contain fairfax as a value
-     *     each post code must start with 22
-     */
+public class Task_1 extends ZipCodeTestBase {
+
+    @DisplayName("Get Body Response")
+    @Test
+    public void given_except_application_json() {
+
+        Response response = given().accept(ContentType.JSON)
+                .and().pathParam("postal-code", "22192")
+                .get("us/{postal-code}");
+
+        assertEquals(HttpStatus.SC_OK, response.statusCode());
+        assertEquals(ContentType.JSON.toString(), response.contentType());
+        assertEquals("cloudflare", response.getHeader("Server"));
+        assertFalse(("Report-To").isEmpty());
+
+        ZipCode zip = response.as(ZipCode.class);
+
+        assertEquals("22192", zip.getPostCode());
+        assertEquals("United States", zip.getCountry());
+        assertEquals("US", zip.getCountryAbbreviation());
+
+        assertEquals("Woodbridge", zip.getPlaces().get(0).getPlaceName());
+        assertEquals("Virginia", zip.getPlaces().get(0).getState());
+        assertEquals("38.676", zip.getPlaces().get(0).getLatitude());
+    }
+
+    @DisplayName("Wrong Zip Code")
+    @Test
+    public void wrongZipCode() {
+
+        Response response = given().accept(ContentType.JSON)
+                .and().pathParam("postal-code", "50000")
+                .get("us/{postal-code}");
+
+        assertEquals(HttpStatus.SC_NOT_FOUND, response.statusCode());
+        assertEquals(ContentType.JSON.toString(), response.contentType());
+    }
+
+    @DisplayName("Compare Body Information")
+    @Test
+    public void getBodyInformation() {
+
+        Response response = given().accept(ContentType.JSON)
+                .and().pathParam("state", "VA")
+                .and().pathParam("city", "Woodbridge")
+                .when().get("/us/{state}/{city}");
+
+        assertEquals(HttpStatus.SC_OK, response.statusCode());
+        assertEquals(ContentType.JSON.toString(), response.contentType());
+
+        ZipCode zip = response.as(ZipCode.class);
+
+        assertEquals("US", zip.getCountryAbbreviation());
+        assertEquals("United States", zip.getCountry());
+        assertEquals("Woodbridge", zip.getPlaceName());
+
+        for (ZipCodeInfo each : zip.getPlaces()) {
+            assertTrue(each.getPlaceName().contains("Woodbridge"));
+            assertTrue(each.getPostCode().startsWith("22"));
+        }
+    }
 }
