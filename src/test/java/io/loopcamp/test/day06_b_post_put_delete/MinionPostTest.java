@@ -125,6 +125,7 @@ public class MinionPostTest extends MinionTestBase {
      */
     @Test
     public void addNewMinionAsPOJOTest() {
+
         // Minion object
         Minion newMinion = new Minion();
         newMinion.setGender("Female");
