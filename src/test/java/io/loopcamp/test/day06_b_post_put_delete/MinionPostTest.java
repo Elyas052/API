@@ -1,5 +1,6 @@
 package io.loopcamp.test.day06_b_post_put_delete;
 
+import io.loopcamp.pojo.Minion;
 import io.loopcamp.utils.MinionRestUtils;
 import io.loopcamp.utils.MinionTestBase;
 import io.restassured.http.ContentType;
@@ -7,6 +8,9 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -26,7 +30,7 @@ public class MinionPostTest extends MinionTestBase {
      * "phone": 1234567425
      * }
      * When I send POST request to /minions
-     * ---------------------------------------------
+     * ------------------------------
      * Then status code is 201
      * And content type is "application/json;charset=UTF-8"
      * And "success" is "A Minion is Born!"
@@ -37,13 +41,13 @@ public class MinionPostTest extends MinionTestBase {
     public void addNewMinionAsJsonTest() {
         String jsonBody = "{\n" +   // Always put the double quote first and then copy past the body
                 "\"gender\": \"Male\",\n" +
-                "\"name\": \"TestPost\",\n" +
+                "\"name\": \"TestPostString\",\n" +
                 "\"phone\": 1234567425\n" +
                 "}";
 
         Response response = given().accept(ContentType.JSON)
                 .and().contentType(ContentType.JSON)
-                .and().body(jsonBody)
+                .and().body(jsonBody) // SERIALIZATION --- > FROM String Object to JSON
                 .when().post("/minions");
 
         // Verify status code
@@ -60,20 +64,98 @@ public class MinionPostTest extends MinionTestBase {
         // Verify body
         assertThat(jsonPath.getString("success"), equalTo("A Minion is Born!"));
 
-        assertThat(jsonPath.getString("data.name"), equalTo("TestPost"));
+        assertThat(jsonPath.getString("data.name"), equalTo("TestPostString"));
         assertThat(jsonPath.getString("data.gender"), equalTo("Male"));
         assertThat(jsonPath.getString("data.phone"), equalTo("1234567425"));
 
         int id = jsonPath.getInt("data.id");
-        System.out.println("Minion id: " + id);
+        System.out.println("minion id: " + id);
         MinionRestUtils.deleteMinionById(id);
     }
 
+    /**
+     * {
+     * "gender": "Male",
+     * "name": "TestPostMap"
+     * "phone": 1234567425
+     * }
+     */
+    @Test
     public void addNewMinionAsMapTest() {
 
+        Map<String, Object> minionPostMap = new HashMap<>();
+        minionPostMap.put("gender", "Male");
+        minionPostMap.put("name", "TestPostMap");
+        minionPostMap.put("phone", 1234567425);
+
+        Response response = given().accept(ContentType.JSON)
+                .and().contentType(ContentType.JSON)
+                .and().body(minionPostMap) // SERIALIZATION ---> FROM Map Collection Object to JSON
+                .when().post("/minions");
+
+        // Verify status code
+        response.prettyPrint();
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode()); // JUnit
+        assertThat(response.statusCode(), is(201)); // Hamcrest
+
+        // Verify Header
+        assertThat(response.contentType(), is("application/json;charset=UTF-8"));
+
+        // Converted response to JsonPath
+        JsonPath jsonPath = response.jsonPath();
+
+        // Verify body
+        assertThat(jsonPath.getString("success"), equalTo("A Minion is Born!"));
+
+        assertThat(jsonPath.getString("data.name"), equalTo("TestPostMap"));
+        assertThat(jsonPath.getString("data.gender"), equalTo("Male"));
+        assertThat(jsonPath.getString("data.phone"), equalTo("1234567425"));
+
+        int id = jsonPath.getInt("data.id");
+        System.out.println("minion id: " + id);
+        MinionRestUtils.deleteMinionById(id);
     }
 
+    /**
+     * {
+     * "gender": "Female",
+     * "name": "TestPostPojo"
+     * "phone": 1234567425
+     * }
+     */
+    @Test
     public void addNewMinionAsPOJOTest() {
+        // Minion object
+        Minion newMinion = new Minion();
+        newMinion.setGender("Female");
+        newMinion.setName("TestPostPojo");
+        newMinion.setPhone("1234567425");
 
+        Response response = given().accept(ContentType.JSON)
+                .and().contentType(ContentType.JSON)
+                .and().body(newMinion) // SERIALIZATION ---> FROM Minion POJO Class Object to JSON
+                .when().post("/minions");
+
+        // Verify status code
+        response.prettyPrint();
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode()); // JUnit
+        assertThat(response.statusCode(), is(201)); // Hamcrest
+
+        // Verify Header
+        assertThat(response.contentType(), is("application/json;charset=UTF-8"));
+
+        // Converted response to JsonPath
+        JsonPath jsonPath = response.jsonPath();
+
+        // Verify body
+        assertThat(jsonPath.getString("success"), equalTo("A Minion is Born!"));
+
+        assertThat(jsonPath.getString("data.name"), equalTo("TestPostPojo"));
+        assertThat(jsonPath.getString("data.gender"), equalTo("Female"));
+        assertThat(jsonPath.getString("data.phone"), equalTo("1234567425"));
+
+        int id = jsonPath.getInt("data.id");
+        System.out.println("minion id: " + id);
+        MinionRestUtils.deleteMinionById(id);
     }
 }

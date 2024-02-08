@@ -53,7 +53,7 @@ public class MinionHamcrestTest extends MinionTestBase {
      * And query param nameContains value is "e"
      * And query param gender value is "Female"
      * When I send get request to /minions/search
-     * ----------
+     * ----------------------------------------
      * Then status code is 200
      * And content type is Json
      * And header date contains 2024
