@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinionHamcrestTest extends MinionTestBase {
 
     /**
-     * Given except type is json
-     * And path id is 24
+     * given except type is json
+     * and path id is 24
      * When I send get request to /minions/{id}
-     * ------------------------------
+     * ----------------------------------------
      * then status code is 200
      * and content type is application/json
      * and validate response body
@@ -65,7 +65,7 @@ public class MinionHamcrestTest extends MinionTestBase {
      * every name contains e
      */
 
-    @DisplayName("GET /minions/search -- with query params")
+    @DisplayName("GET /minions/search  -- with query params")
     @Test
     public void searchTest() {
 

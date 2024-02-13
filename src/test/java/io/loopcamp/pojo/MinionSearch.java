@@ -8,5 +8,5 @@ import java.util.List;
 public class MinionSearch {
 
     private List<Minion> content;
-    private int totalElements;
+    private int totalElement;
 }

@@ -1,6 +1,5 @@
 package io.loopcamp.test.day04_b_xml_path_deserialization;
 
-import groovy.xml.XmlParser;
 import io.loopcamp.utils.MinionTestBase;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -18,29 +17,28 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinionXmlPathTest extends MinionTestBase {
 
     /**
-     * Given an accepted type is application/xml
+     * Given except type is application/xml
      * When I send GET request to /minions
      * ----------------------------------------
      * Then status code is 200
      * And content type is XML
      * And minion at index 0 is matching: (NOTE: Your index 0 might be different)
-     * id --> 1
-     * name --> Meade
-     * gender --> Male
-     * phone --> 9994128233
+     * id =>       1
+     * name =>     Meade
+     * gender =>   Male
+     * phone =>    9994128233
      */
 
     @DisplayName("GET /minions -- with XML")
     @Test
-    public void readMinionJsonUsingPathTest() {
+    public void minionXmlPathTest() {
 
-        // Send a GET request to /minions
         Response response = given().accept(ContentType.XML)
                 .when().get("/minions");
-
-        // Validate status code and content type
+        //response.prettyPrint();
         assertEquals(HttpStatus.SC_OK, response.statusCode());
         assertEquals(ContentType.XML.toString(), response.contentType());
+        //assertEquals("application/xml", response.contentType());
 
         // Convert XML response body to XmlPath object
         XmlPath xmlPath = response.xmlPath();
@@ -49,18 +47,16 @@ public class MinionXmlPathTest extends MinionTestBase {
         System.out.println("name: " + xmlPath.getString("List.item[0].name"));
         System.out.println("gender: " + xmlPath.getString("List.item[0].gender"));
         System.out.println("phone: " + xmlPath.getString("List.item[0].phone"));
-        //System.out.println("phone: " + xmlPath.getLong("List.item[0].phone"));
+        // System.out.println("phone: " + xmlPath.getLong("List.item[0].phone"));
 
-        assertEquals(1, xmlPath.getInt("list.item[0].id"));
-        assertEquals("Meade", xmlPath.getString("list.item[0].name"));
-        assertEquals("Male", xmlPath.getString("list.item[0].gender"));
-        assertEquals(9994128233L, xmlPath.getLong("list.item[0].phone"));
+        assertEquals(1, xmlPath.getInt("List.item[0].id"));
+        assertEquals("Meade", xmlPath.getString("List.item[0].name"));
+        assertEquals("Male", xmlPath.getString("List.item[0].gender"));
+        assertEquals(9994128233L, xmlPath.getLong("List.item[0].phone"));
 
         // Can you get me all the names?
-        List<String> allNames = xmlPath.getList("list.item.name");
-        for (int i = 0; i < allNames.size(); i++) {
-            System.out.println("All Names = " + allNames.get(i));
-        }
+        List<String> allNames = xmlPath.getList("List.item.name");
+        System.out.println("All Names: " + allNames);
         System.out.println("Count: " + allNames.size());
     }
 }

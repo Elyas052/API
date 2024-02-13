@@ -2,6 +2,7 @@ package io.loopcamp.test.day06_a_hamcrest;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +13,6 @@ public class HamcrestMatchersIntro {
 
     @Test
     public void numberTEst() {
-
         assertThat(1 + 3, is(4));
         assertThat(5 + 5, equalTo(10));
         assertThat(10 + 5, is(equalTo(15)));
@@ -35,15 +35,15 @@ public class HamcrestMatchersIntro {
         assertThat(word, equalTo("loopcamp"));
         assertThat(word, is(equalTo("loopcamp")));
 
-        // startsWith
+        // Starts with
         assertThat(word, startsWith("loop"));
         assertThat(word, startsWithIgnoringCase("LOOP"));
 
-        // contains
+        // Contains
         assertThat(word, containsString("pc"));
         assertThat(word, containsStringIgnoringCase("PC"));
 
-        // blank String - empty String
+        // b=Blank String - empty String
         String str = " ";
         assertThat(str, is(blankString()));
         assertThat(str.replace(" ", ""), is(emptyOrNullString()));
@@ -56,20 +56,20 @@ public class HamcrestMatchersIntro {
         List<Integer> nums = Arrays.asList(5, 20, 1, 54, 0);
         List<String> words = Arrays.asList("java", "selenium", "git", "maven", "api");
 
-        // size
+        // Size
         assertThat(nums, hasSize(5));
         assertThat(words, hasSize(5));
 
-        // contains item
+        // Contains item
         assertThat(nums, hasItem(20));
-        //assertThat(nums, hasItem(7));  // this fails since 7 is not among the items from nums list
+        //assertThat(nums, hasItem(7));  // This fails since 7 is not among the items from nums list
 
         assertThat(words, hasItem("git"));
         assertThat(words, hasItems("git", "api"));
-        // assertThat(words, hasItems("git", "db"));  // all the provided parameters have to be in the list for positive result
+        // assertThat(words, hasItems("git", "db")); // All the provided parameters have to be in the list for positive result
         assertThat(nums, containsInAnyOrder(54, 20, 0, 5, 1)); // You need to provide all the elements (same number of the total elements)
 
-        // every element
+        // Every element
         assertThat(nums, everyItem(greaterThanOrEqualTo(0)));
         assertThat(words, everyItem(is(not(blankString()))));
     }

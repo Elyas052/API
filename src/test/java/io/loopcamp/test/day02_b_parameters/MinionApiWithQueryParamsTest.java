@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinionApiWithQueryParamsTest {
 
     /**
-     * Given an accepted type is Json
+     * Given except type is Json
      * And query parameter values are:
      * gender|Female
      * nameContains|e
      * When a user sends GET request to /api/minions/search
-     * ---------------------------------------------------------
+     * ----------------------------------------
      * Then response status code should be 200
      * And response content-type: application/json
      * And "Female" should be in response payload
@@ -25,29 +25,24 @@ public class MinionApiWithQueryParamsTest {
      */
     String endpoint = "http://44.212.56.101:8000/api/minions/search";
 
-    @DisplayName("GET /api/minions/search with query params")
+    @DisplayName(" GET /api/minions/search with query params")
     @Test
     public void searchForMinionTest() {
-
-        // Sending a GET request to the specified endpoint with query parameters
         Response response = given().accept(ContentType.JSON)
                 .and().queryParam("gender", "Female")
                 .and().queryParam("nameContains", "e")
                 .when().get(endpoint);
 
-        // Verify if the status code is 200 (OK)
+        // Verify is the status code is 200
         assertEquals(HttpStatus.SC_OK, response.statusCode());
 
-        // Verify that the response header content type is JSON
+        // Verify response header content-typ
         assertEquals(ContentType.JSON.toString(), response.contentType());
 
-        // Assert that "Female" is present in the response payload
+        // And "Female" should be in response payload
+        // And "Janette" should be in response payload
         assertTrue(response.body().asString().contains("Female"));
-
-        // Assert that "Male" is not present in the response payload
-        assertTrue(!response.body().asString().contains("Male"));
-
-        // Assert that "Janette" is present in the response payload
+        assertTrue(!response.body().asString().contains("Male")); // true
         assertTrue(response.body().asString().contains("Janette"));
     }
 }

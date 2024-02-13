@@ -30,13 +30,12 @@ public class MinionPostTest extends MinionTestBase {
      * "phone": 1234567425
      * }
      * When I send POST request to /minions
-     * ------------------------------
+     * ----------------------------------------
      * Then status code is 201
      * And content type is "application/json;charset=UTF-8"
      * And "success" is "A Minion is Born!"
      * Data name, gender, phone matches my request details
      */
-
     @Test
     public void addNewMinionAsJsonTest() {
         String jsonBody = "{\n" +   // Always put the double quote first and then copy past the body
@@ -64,7 +63,7 @@ public class MinionPostTest extends MinionTestBase {
         // Verify body
         assertThat(jsonPath.getString("success"), equalTo("A Minion is Born!"));
 
-        assertThat(jsonPath.getString("data.name"), equalTo("TestPostString"));
+        assertThat(jsonPath.getString("data.name"), equalTo("TestPost"));
         assertThat(jsonPath.getString("data.gender"), equalTo("Male"));
         assertThat(jsonPath.getString("data.phone"), equalTo("1234567425"));
 
@@ -114,6 +113,7 @@ public class MinionPostTest extends MinionTestBase {
         int id = jsonPath.getInt("data.id");
         System.out.println("minion id: " + id);
         MinionRestUtils.deleteMinionById(id);
+
     }
 
     /**
@@ -125,7 +125,6 @@ public class MinionPostTest extends MinionTestBase {
      */
     @Test
     public void addNewMinionAsPOJOTest() {
-
         // Minion object
         Minion newMinion = new Minion();
         newMinion.setGender("Female");

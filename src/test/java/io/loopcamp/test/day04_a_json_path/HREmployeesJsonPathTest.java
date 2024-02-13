@@ -1,5 +1,6 @@
 package io.loopcamp.test.day04_a_json_path;
 
+import io.loopcamp.utils.ConfigurationReader;
 import io.loopcamp.utils.HRApiTestBase;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -7,22 +8,30 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for verifying JSON response using RestAssured and JsonPath for HR Employees API.
- */
 public class HREmployeesJsonPathTest extends HRApiTestBase {
 
-    @DisplayName("GET /employees?limit=2")
+    /**
+     * Given an accepted type is Json
+     * And query param limit is 2
+     * when I send GET request to /employees
+     * Then I can use jsonPath to query and read values from json body
+     */
+
+    @DisplayName("GET /employees?limit=200")
     @Test
     public void jsonPathEmployeeTest() {
 
         /**
-         Map<String, Object> queryMap = new HashMap<>();
+         * This is how we store KEY and VALUE into a MAP and use it as part of our QUERY PARAMS()
+         Map <String, Object> queryMap = new HashMap<>();
          queryMap.put("limit", 2);
 
          Response response = given().accept(ContentType.JSON)
@@ -30,30 +39,23 @@ public class HREmployeesJsonPathTest extends HRApiTestBase {
          .when().get("/employees");
          */
 
-        // Sending a GET request to /employees with a limit of 2
         Response response = given().accept(ContentType.JSON)
-                .and().queryParam("limit", 2)
+                .and().queryParam("limit", 20)
                 .when().get("/employees");
 
-        // Uncomment the next line to print the response body for debugging purposes
-        // response.prettyPrint();
+        //response.prettyPrint();
 
-        // Creating a JsonPath object from the response body
         JsonPath jsonPath = response.jsonPath();
-
-        // Extracting and printing information about the first employee
         System.out.println("1st emp name: " + jsonPath.getString("items[0].first_name"));
         System.out.println("1st emp job id: " + jsonPath.getString("items[0].job_id"));
 
-        // Extracting the list of email addresses and printing their size and values
         List<String> emails = jsonPath.getList("items.email");
-        System.out.println("Emails = " + emails.size());
         System.out.println("Emails = " + emails);
 
-        // Asserting that the list of emails contains the specified email address "NYANG"
+        // Assert that NYANG email is among all options
         assertTrue(emails.contains("NYANG"));
 
-        // Get all employees first name who work for department_id=90
+        // get all employees first name who work for department_id=90
         /*
             SELECT first_name FROM employees
             WHERE department_id = 90;
@@ -83,6 +85,7 @@ public class HREmployeesJsonPathTest extends HRApiTestBase {
         // Find the first name for the mix salary -- > max{}
         String minSalaryName = jsonPath.getString("items.min{it.salary}.first_name");
         System.out.println("Min Salary Name = " + minSalaryName);
+
 
         // What is the min salary with related infos?
         String minSalary = jsonPath.getString("items.min{it.salary}");

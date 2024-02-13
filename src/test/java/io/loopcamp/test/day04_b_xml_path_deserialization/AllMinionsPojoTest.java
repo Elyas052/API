@@ -1,11 +1,10 @@
 package io.loopcamp.test.day04_b_xml_path_deserialization;
 
 import io.loopcamp.pojo.Minion;
+import io.loopcamp.utils.MinionTestBase;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,27 +13,26 @@ import java.util.List;
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AllMinionsPojoTest extends MinionToMapTest {
-
+public class AllMinionsPojoTest extends MinionTestBase {
 
     /**
-     * Given except a type is Json
+     * Given an accepted type is json
      * when I send GET request to /minions
-     * ------------------------------------
+     * ----------------------------------------
      * Then status code is 200
      * And content type is json
      * And I can convert json to list of minion POJOs
      */
 
-    @DisplayName("GET /minions -- with POJO")
     @Test
-    public void allMinionsPojoTest() {
+    public void allMinionPojoTest() {
 
         Response response = given().accept(ContentType.JSON)
                 .when().get("/minions");
+        assertEquals(200, response.statusCode());
+        assertEquals("application/json", response.contentType());
 
-        assertEquals(HttpStatus.SC_OK, response.statusCode());
-        assertEquals(ContentType.JSON.toString(), response.contentType());
+        response.prettyPrint();
 
         JsonPath jsonPath = response.jsonPath();
 

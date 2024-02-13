@@ -41,12 +41,10 @@ public class MinionApiAndDbValidationTest extends MinionTestBase {
      * WHERE minion_id = newIdFrom Post request;
      * Then name, gender, phone values must match with POST request details
      */
-
     Minion neeMin = MinionRestUtils.getNewMinion();
 
     @Test
     public void postNewMinionThenValidateInDBTest() {
-
         Map<String, Object> newMinion = new HashMap<>();
         newMinion.put("gender", "Male");
         newMinion.put("name", "PostVSDatabase");
@@ -54,7 +52,7 @@ public class MinionApiAndDbValidationTest extends MinionTestBase {
 
         Response response = given().accept(ContentType.JSON)
                 .and().contentType(ContentType.JSON)
-                .and().body(newMinion) // SERIALIZATION from MAP to JSON
+                .and().body(newMinion) // SERIALIZATION - MAP > JSON
                 .when().post("/minions");
 
         response.prettyPrint();
@@ -63,9 +61,9 @@ public class MinionApiAndDbValidationTest extends MinionTestBase {
 
         //assertThat(response.path("success"), equalTo("A Minion is Born!")); // with path()
 
-        JsonPath jsonPath = response.jsonPath(); // Converting a path to jsonPath
+        JsonPath jsonPath = response.jsonPath(); // converting a path to jsonPath
 
-        assertThat(jsonPath.getString("success"), equalTo("A Minion is Born!")); // With jsonPath.getString()
+        assertThat(jsonPath.getString("success"), equalTo("A Minion is Born!")); // with jsonPath.getString()
 
         int newMinionID = jsonPath.getInt("data.id");
         System.out.println("Newly added Minions ID: " + newMinionID);

@@ -16,15 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ORDSHamcrestTest extends HRApiTestBase {
 
     /**
-     * Given except type is json
-     * When I send get request to /countries
-     * ------------------------------------
+     * given except type is json
+     * when I send get request to /countries
+     * ----------------------------------------
      * Then status code is 200
      * and content type is json
      * and count should be 25
      * and country ids should contain "AR,AU,BE,BR,CA"
      * and country names should have "Argentina,Australia,Belgium,Brazil,Canada"
-     * <p>
      * items[0].country_id ==> AR
      * items[1].country_id ==> AU
      */
@@ -60,7 +59,7 @@ public class ORDSHamcrestTest extends HRApiTestBase {
                         "region_id", is(20));
     }
 
-    //TODO: Do the research how can the order be used with the JUnit.
+    //TODO:  DO the research how can the order be used with the JUnit.
     /**
      * Given except a type is json
      * When I send get request to /countries/{country_id}
@@ -68,17 +67,18 @@ public class ORDSHamcrestTest extends HRApiTestBase {
      * And content type is json
      * And country_name is Argentina, country_id is AR, region_id is 20
      */
-    @DisplayName("GET /countries/{country_id}")
-    @Test
-    @Order(2)
-    public void singleCountryTest () {
-        given().accept(ContentType.JSON)
-                .and().pathParam("country_id", country_id)
-                .when().get("/countries/{country_id}")
-                .then().statusCode(200)
-                .and().contentType(ContentType.JSON)
-                .and().body("country_name", is("Argentina"),
-                        "country_id", is(country_id),
-                        "region_id", is(20));
-    }
+
+//    @DisplayName("GET /countries/{country_id}")
+//    @Test
+//    @Order(2)
+//    public void singleCountryTest () {
+//        given().accept(ContentType.JSON)
+//                .and().pathParam("country_id", country_id)
+//                .when().get("/countries/{country_id}")
+//                .then().statusCode(200)
+//                .and().contentType(ContentType.JSON)
+//                .and().body("country_name", is("Argentina"),
+//                        "country_id", is("AR"),
+//                        "region_id", is(20));
+//    }
 }

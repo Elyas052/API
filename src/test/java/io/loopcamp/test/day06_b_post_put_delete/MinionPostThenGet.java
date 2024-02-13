@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MinionPostThenGet extends MinionTestBase {
 
-    //Minion newMinion = make a method that returns a new minion with auto-generated values
+    //Minion newMinion = make a method that returns a new minion with auto generated values
     Minion newMinion = MinionRestUtils.getNewMinion();
 
     @Test
@@ -50,6 +50,5 @@ public class MinionPostThenGet extends MinionTestBase {
 
         // Once I am done with the assertions, I can DELETE
         MinionRestUtils.deleteMinionById(newMinionID);
-
     }
 }

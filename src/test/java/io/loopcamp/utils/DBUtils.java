@@ -52,8 +52,7 @@ public class DBUtils {
     /**
      * @param query
      * @return returns a single cell value. If the results in multiple rows and/or
-     * columns of data, only the first column of the first row will be returned.
-     * The rest of the data will be ignored
+     * Columns of data, only the first column of the first row will be returned, the rest of the data will be ignored
      */
     public static Object getCellValue(String query) {
         return getQueryResultList(query).get(0).get(0);
@@ -62,8 +61,8 @@ public class DBUtils {
     /**
      * @param query
      * @return returns a list of Strings which represent a row of data. If the query
-     * results in multiple rows and/or columns of data, only the first row will
-     * be returned. The rest of the data will be ignored
+     * Results in multiple rows and/or columns of data, only the first row will be returned.
+     * The rest of the data will be ignored
      */
     public static List<Object> getRowList(String query) {
         return getQueryResultList(query).get(0);
@@ -71,9 +70,9 @@ public class DBUtils {
 
     /**
      * @param query
-     * @return returns a map that represents a row of data where the key is the column
-     * name. If the query results in multiple rows and/or columns of data,
-     *  only the first row will be returned. The rest of the data will be ignored
+     * @return returns a map that represents a row of data where the key is the column name.
+     * If the query results in multiple rows and/or columns of data, only the first row will be returned.
+     * The rest of the data will be ignored
      */
     public static Map<String, Object> getRowMap(String query) {
         return getQueryResultMap(query).get(0);

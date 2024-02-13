@@ -33,6 +33,7 @@ public class HRApiGetTest {
      * Content type should be "application/json"
      * And body should contain "Europe"
      */
+
     @DisplayName("GET /regions")
     @Test
     public void getRegionsTest() {
@@ -55,6 +56,7 @@ public class HRApiGetTest {
      * Content type should be "application/json"
      * And body should contain "Europe"
      */
+
     @DisplayName("GET /regions/{region_id}")
     @Test
     public void getSingleRegionPathParamTest() {
@@ -81,6 +83,7 @@ public class HRApiGetTest {
      * And region name should be "Americas"
      * And region id should be "20"
      */
+
     @DisplayName("GET /regions?q={\"region_name\": \"Americas\"}")
     @Test
     public void getRegionQueryParamTest() {
